@@ -4,10 +4,10 @@ import { Subtitle } from 'components/Subtitle/Subtitle.styled';
 import ContactList from 'components/ContactList';
 import Filter from 'components/Filter/Filter';
 import { useSelector } from 'react-redux';
-import { getContacts } from 'redux/selectors';
+import { selectContacts } from 'redux/selectors';
 
 export default function App() {
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
 
   return (
     <Container>

@@ -9,8 +9,9 @@ import {
   ValidationMessage,
 } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts } from 'redux/selectors';
+import { selectContacts } from 'redux/selectors';
 import { addContact } from 'redux/contactsSlice';
+import { nanoid } from 'nanoid';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -34,7 +35,7 @@ const validationSchema = Yup.object().shape({
 
 export default function ContactForm() {
   const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
 
   const isValidContact = name => {
     const isSameContact = contacts.some(contact => contact.name === name);
@@ -56,6 +57,9 @@ export default function ContactForm() {
     number: '',
   };
 
+  const nameInputId = nanoid();
+  const numberInputId = nanoid();
+
   return (
     <Formik
       initialValues={initialValues}
@@ -68,16 +72,16 @@ export default function ContactForm() {
       {({ errors }) => (
         <StyledForm>
           <div>
-            <Label htmlFor="name">Name</Label>
-            <Input type="text" name="name" />
+            <Label htmlFor={nameInputId}>Name</Label>
+            <Input id={nameInputId} type="text" name="name" />
             {errors.name && (
               <ErrorMessage name="name" component={ValidationMessage} />
             )}
           </div>
 
           <div>
-            <Label htmlFor="number">Number</Label>
-            <Input type="text" name="number" />
+            <Label htmlFor={numberInputId}>Number</Label>
+            <Input id={numberInputId} type="text" name="number" />
             {errors.number && (
               <ErrorMessage name="number" component={ValidationMessage} />
             )}
