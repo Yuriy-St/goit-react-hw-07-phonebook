@@ -7,7 +7,7 @@ export const StyledForm = styled(Form)`
   display: flex;
   flex-direction: column;
   row-gap: 1em;
-  max-width: 20em;
+  max-width: 24em;
   border: 1px solid ${color.grey_800};
   border-radius: 0.25em;
   padding: 1em;

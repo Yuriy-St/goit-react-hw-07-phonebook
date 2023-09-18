@@ -3,9 +3,22 @@ import { color } from 'constants/theme';
 
 export const StyledContact = styled.li`
   width: 100%;
-  margin-left: 2em;
+  // margin-left: 2em;
   display: flex;
   justify-content: space-between;
+  column-gap: 2em;
+`;
+
+export const DataBlock = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-grow: 1;
+`;
+
+export const Name = styled.p``;
+
+export const Phone = styled.p`
+  text-align: right;
 `;
 
 export const DeleteBtn = styled.button`

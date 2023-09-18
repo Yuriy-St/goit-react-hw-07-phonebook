@@ -39,7 +39,7 @@ const processQuery = async options => {
   try {
     const { status, data } = await axios(options);
     if (status !== 200) throw data;
-    return { data };
+    return data;
   } catch (err) {
     const { response } = err;
 

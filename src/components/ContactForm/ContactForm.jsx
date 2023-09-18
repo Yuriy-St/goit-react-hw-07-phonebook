@@ -8,10 +8,8 @@ import {
   StyledForm,
   ValidationMessage,
 } from './ContactForm.styled';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectContacts } from 'redux/selectors';
-import { addContact } from 'redux/contactsSlice';
 import { nanoid } from 'nanoid';
+import { useAddContactMutation, useGetContactsQuery } from 'redux/contactsApi';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -21,7 +19,7 @@ const validationSchema = Yup.object().shape({
       excludeEmptyString: true,
     })
     .required('Required'),
-  number: Yup.string()
+  phone: Yup.string()
     .matches(
       /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/,
       {
@@ -34,8 +32,8 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function ContactForm() {
-  const dispatch = useDispatch();
-  const contacts = useSelector(selectContacts);
+  const { data: contacts } = useGetContactsQuery();
+  const [addContact] = useAddContactMutation();
 
   const isValidContact = name => {
     const isSameContact = contacts.some(contact => contact.name === name);
@@ -47,14 +45,14 @@ export default function ContactForm() {
     return true;
   };
 
-  const handleSubmit = contact => {
-    if (!isValidContact(contact.name)) return;
-    dispatch(addContact(contact));
+  const handleSubmit = ({ name, phone }) => {
+    if (!isValidContact(name)) return;
+    addContact({ name, phone });
   };
 
   const initialValues = {
     name: '',
-    number: '',
+    phone: '',
   };
 
   const nameInputId = nanoid();
@@ -81,9 +79,9 @@ export default function ContactForm() {
 
           <div>
             <Label htmlFor={numberInputId}>Number</Label>
-            <Input id={numberInputId} type="text" name="number" />
+            <Input id={numberInputId} type="text" name="phone" />
             {errors.number && (
-              <ErrorMessage name="number" component={ValidationMessage} />
+              <ErrorMessage name="phone" component={ValidationMessage} />
             )}
           </div>
 

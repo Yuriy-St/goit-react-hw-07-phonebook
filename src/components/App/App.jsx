@@ -3,12 +3,8 @@ import ContactForm from 'components/ContactForm/ContactForm';
 import { Subtitle } from 'components/Subtitle/Subtitle.styled';
 import ContactList from 'components/ContactList';
 import Filter from 'components/Filter/Filter';
-import { useSelector } from 'react-redux';
-import { selectContacts } from 'redux/selectors';
 
 export default function App() {
-  const contacts = useSelector(selectContacts);
-
   return (
     <Container>
       <div>
@@ -19,7 +15,7 @@ export default function App() {
       <div>
         <Subtitle>Contacts</Subtitle>
         <Filter />
-        {contacts?.length ? <ContactList /> : null}
+        <ContactList />
       </div>
     </Container>
   );
