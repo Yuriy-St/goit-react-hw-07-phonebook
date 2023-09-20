@@ -9,7 +9,9 @@ import {
   ValidationMessage,
 } from './ContactForm.styled';
 import { nanoid } from 'nanoid';
-import { useAddContactMutation, useGetContactsQuery } from 'redux/contactsApi';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectContacts } from 'redux/selectors';
+import { addContact } from 'redux/operations';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -32,8 +34,9 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function ContactForm() {
-  const { data: contacts } = useGetContactsQuery();
-  const [addContact] = useAddContactMutation();
+  const dispatch = useDispatch();
+
+  const contacts = useSelector(selectContacts);
 
   const isValidContact = name => {
     const isSameContact = contacts.some(contact => contact.name === name);
@@ -47,7 +50,7 @@ export default function ContactForm() {
 
   const handleSubmit = ({ name, phone }) => {
     if (!isValidContact(name)) return;
-    addContact({ name, phone });
+    dispatch(addContact({ name, phone }));
   };
 
   const initialValues = {

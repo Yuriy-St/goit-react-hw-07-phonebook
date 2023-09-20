@@ -1,37 +1,21 @@
 import Contact from 'components/Contact/Contact';
 import { ContactListStyled } from './ContactList.styled';
-import { selectFilter } from 'redux/selectors';
+import {
+  selectContactsError,
+  selectContactsStatus,
+  selectFilteredContacts,
+} from 'redux/selectors';
 import { useSelector } from 'react-redux';
-import { useGetContactsQuery } from 'redux/contactsApi';
-import { useMemo } from 'react';
+import { STATUS } from 'redux/constants';
 
 export default function ContactList() {
-  const {
-    data: contacts,
-    isLoading,
-    isFetching,
-    isSuccess,
-    isError,
-    error,
-  } = useGetContactsQuery();
+  const status = useSelector(selectContactsStatus);
+  const error = useSelector(selectContactsError);
+  const filteredContacts = useSelector(selectFilteredContacts);
 
-  const filter = useSelector(selectFilter);
+  if (status === STATUS.pending) return <div>Loading...</div>;
 
-  const filteredContacts = useMemo(() => {
-    const filterNormalized = filter.toLowerCase();
-
-    const filtered = filter
-      ? contacts.filter(({ name }) =>
-          name.toLowerCase().includes(filterNormalized)
-        )
-      : contacts;
-
-    return filtered || [];
-  }, [contacts, filter]);
-
-  if (isLoading || isFetching) return <div>Loading...</div>;
-
-  if (isSuccess) {
+  if (status === STATUS.complete) {
     return (
       <>
         <ContactListStyled>
@@ -43,5 +27,5 @@ export default function ContactList() {
     );
   }
 
-  if (isError) return <div>{error.message}</div>;
+  if (status === STATUS.failed) return <div>{error.message}</div>;
 }

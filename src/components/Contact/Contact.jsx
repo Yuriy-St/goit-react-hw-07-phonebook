@@ -6,9 +6,10 @@ import {
   Phone,
   StyledContact,
 } from './Contact.styled';
-import { useDeleteContactByIdMutation } from 'redux/contactsApi';
+import { useDispatch } from 'react-redux';
+import { deleteContact } from 'redux/operations';
 export default function Contact({ id, name, phone }) {
-  const [deleteContact] = useDeleteContactByIdMutation();
+  const dispatch = useDispatch();
 
   return (
     <StyledContact>
@@ -16,7 +17,7 @@ export default function Contact({ id, name, phone }) {
         <Name>{name}:</Name>
         <Phone>{phone}</Phone>
       </DataBlock>
-      <DeleteBtn type="button" onClick={() => deleteContact(id)}>
+      <DeleteBtn type="button" onClick={() => dispatch(deleteContact(id))}>
         Delete
       </DeleteBtn>
     </StyledContact>
