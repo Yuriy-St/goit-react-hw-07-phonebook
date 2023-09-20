@@ -8,14 +8,12 @@ export const selectFilter = state => state.filter;
 export const selectFilteredContacts = createSelector(
   [selectContacts, selectFilter],
   (contacts, filter) => {
+    if (!filter) return contacts;
+
     const filterNormalized = filter.toLowerCase();
 
-    const filtered = filter
-      ? contacts.filter(({ name }) =>
-          name.toLowerCase().includes(filterNormalized)
-        )
-      : contacts;
-
-    return filtered;
+    return contacts.filter(({ name }) =>
+      name.toLowerCase().includes(filterNormalized)
+    );
   }
 );
